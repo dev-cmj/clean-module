@@ -1,14 +1,14 @@
 package com.goodmit.framework.domain.user.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import kr.goodmit.framework.common.enums.SocialType;
+import lombok.*;
 
 @Entity
+@Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "Users")
 public class User {
 
@@ -25,7 +25,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private SocialType socialType;
 
-    @Builder
     public static User of(String socialId, String email, String name, SocialType socialType) {
         return User.builder()
                 .socialId(socialId)

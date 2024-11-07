@@ -1,6 +1,7 @@
-package com.goodmit.framework.application.auth.client.dto;
+package com.goodmit.framework.application.auth.social.dto;
 
-import com.goodmit.framework.domain.user.entity.SocialType;
+
+import kr.goodmit.framework.common.enums.SocialType;
 
 public record UserInfoResponse(
         String socialId,

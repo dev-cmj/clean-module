@@ -1,4 +1,7 @@
 dependencies {
+
+    implementation project(':common')
+
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta"
     annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}:jakarta"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api:3.0.0"

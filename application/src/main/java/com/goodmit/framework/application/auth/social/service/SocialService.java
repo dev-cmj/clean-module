@@ -1,8 +1,8 @@
-package com.goodmit.framework.application.auth.client.service;
+package com.goodmit.framework.application.auth.social.service;
 
-import com.goodmit.framework.application.auth.client.dto.UserInfoResponse;
-import com.goodmit.framework.application.auth.client.dto.UserLoginRequest;
-import com.goodmit.framework.domain.user.entity.SocialType;
+import com.goodmit.framework.application.auth.social.dto.UserInfoResponse;
+import com.goodmit.framework.application.auth.social.dto.UserLoginRequest;
+import kr.goodmit.framework.common.enums.SocialType;
 
 public interface SocialService {
 
