@@ -2,7 +2,7 @@ package com.goodmit.framework.domain.user.repository;
 
 import com.goodmit.framework.domain.config.DomainConfig;
 import com.goodmit.framework.domain.user.base.BaseTest;
-import com.goodmit.framework.domain.user.entity.UserEntity;
+import com.goodmit.framework.domain.user.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -15,27 +15,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-class UserEntityRepositoryTest extends BaseTest {
+class UserRepositoryTest extends BaseTest {
 
     @Autowired
-    private UserEntityRepository userEntityRepository;
+    private UserRepository UserRepository;
 
     @Test
     void insertUser() {
-        UserEntity userEntity = UserEntity.builder()
+        User User = User.builder()
                 .name("test")
                 .username("test")
                 .password("test")
                 .email("test@test.com")
                 .build();
 
-        UserEntity savedUser = userEntityRepository.save(userEntity);
+        User savedUser = UserRepository.save(User);
 
         assertNotNull(savedUser.getId());
-        assertEquals(userEntity.getName(), savedUser.getName());
-        assertEquals(userEntity.getUsername(), savedUser.getUsername());
-        assertEquals(userEntity.getPassword(), savedUser.getPassword());
-        assertEquals(userEntity.getEmail(), savedUser.getEmail());
+        assertEquals(User.getName(), savedUser.getName());
+        assertEquals(User.getUsername(), savedUser.getUsername());
+        assertEquals(User.getPassword(), savedUser.getPassword());
+        assertEquals(User.getEmail(), savedUser.getEmail());
     }
 
 }
