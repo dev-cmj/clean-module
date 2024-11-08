@@ -1,0 +1,16 @@
+auth:
+  provider:
+    db: true
+    ad: true
+
+security:
+  jwt:
+    cookie:
+      path: /
+      name: __sid
+      domain:
+      max-age: 3600
+      http-only: true
+      secure: false
+    secret-key: M39weGRwoaA/SyChBpsw31uv79jgMDOGf6xt3HK8bq8=
+    expiration: 86400

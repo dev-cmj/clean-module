@@ -5,5 +5,7 @@ dependencies {
     implementation(project(':common'))
 
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.18.1'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
 
 }
