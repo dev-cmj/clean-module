@@ -1,5 +1,6 @@
 package com.goodmit.framework.web.auth.authentication.provider;
 
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +16,11 @@ import java.util.List;
 @Slf4j
 @ConditionalOnProperty(value = "auth.provider.ad", havingValue = "true", matchIfMissing = true)
 public class ADAuthenticationProvider extends ChainableAuthenticationProvider {
+
+    @PostConstruct
+    public void init() {
+        setPriority(2); // 두 번째로 실행되도록 설정
+    }
 
     @Override
     protected Authentication doAuthenticate(Authentication authentication) throws AuthenticationException {

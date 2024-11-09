@@ -40,6 +40,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
             errMsg = "Expired password";
         }
 
+        log.error("Authentication failed: {}", errMsg);
         objectMapper.writeValue(response.getWriter(), errMsg);
     }
 }

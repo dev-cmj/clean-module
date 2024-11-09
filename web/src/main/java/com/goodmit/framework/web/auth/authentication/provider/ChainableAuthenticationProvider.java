@@ -1,5 +1,7 @@
 package com.goodmit.framework.web.auth.authentication.provider;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -7,6 +9,10 @@ import org.springframework.security.core.AuthenticationException;
 public abstract class ChainableAuthenticationProvider implements AuthenticationProvider {
 
     private ChainableAuthenticationProvider nextProvider;
+
+    @Setter
+    @Getter
+    private int priority = Integer.MAX_VALUE;
 
     public void linkWith(ChainableAuthenticationProvider nextProvider) {
         this.nextProvider = nextProvider;

@@ -1,5 +1,8 @@
 package com.goodmit.framework.web.auth.authentication.provider;
 
+import com.goodmit.framework.web.auth.authentication.service.DbUserDetailsService;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -7,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,33 +19,41 @@ import java.util.List;
 @Component
 @ConditionalOnProperty(value = "auth.provider.db", havingValue = "true", matchIfMissing = true)
 @Slf4j
+@RequiredArgsConstructor
 public class DBAuthenticationProvider extends ChainableAuthenticationProvider {
 
+    private final DbUserDetailsService dbUserDetailsService;
+    private final PasswordEncoder passwordEncoder;
+
+    @PostConstruct
+    public void init() {
+        setPriority(1); // 첫 번째로 실행되도록 설정
+    }
 
     @Override
     protected Authentication doAuthenticate(Authentication authentication) throws AuthenticationException {
         log.info("DB 인증 시작");
-        // DB 인증 로직
+
         String username = authentication.getName();
-        String password = authentication.getCredentials().toString();
+        String rawPassword = authentication.getCredentials().toString();
 
-        // 예시: DB 서버에 실제로 인증 로직을 추가
-        boolean isAuthenticated = authenticateWithDB(username, password);
+        // DB에서 사용자 조회
+        UserDetails userDetails = authenticateWithDB(username);
 
-        if (isAuthenticated) {
+        if (userDetails != null && passwordEncoder.matches(rawPassword, userDetails.getPassword())) {
             log.info("DB 인증 성공: {}", username);
-            return new UsernamePasswordAuthenticationToken(username, password, getAuthorities(username));
+            return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         }
-        return null; // 인증 실패 시 null 반환하여 다음 Provider로 넘어감
+
+        return null;
     }
 
-    private boolean authenticateWithDB(String username, String password) {
-        // DB 서버에 실제로 인증 로직을 추가
-        return true;
+    private UserDetails authenticateWithDB(String username) {
+        return dbUserDetailsService.loadUserByUsername(username);
     }
 
     private List<GrantedAuthority> getAuthorities(String username) {
-        // 사용자의 권한을 조회하여 반환
+        // 필요시 권한을 조회해 반환
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 

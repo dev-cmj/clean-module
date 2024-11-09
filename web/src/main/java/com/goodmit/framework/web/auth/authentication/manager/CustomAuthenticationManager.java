@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -19,9 +21,12 @@ public class CustomAuthenticationManager implements AuthenticationManager {
     private final List<ChainableAuthenticationProvider> authChain;
 
     public CustomAuthenticationManager(List<ChainableAuthenticationProvider> authChain) {
-        this.authChain = authChain;
-        for (int i = 0; i < authChain.size() - 1; i++) {
-            authChain.get(i).linkWith(authChain.get(i + 1));
+        this.authChain = authChain.stream()
+                .sorted(Comparator.comparingInt(ChainableAuthenticationProvider::getPriority))
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < this.authChain.size() - 1; i++) {
+            this.authChain.get(i).linkWith(this.authChain.get(i + 1));
         }
     }
 
